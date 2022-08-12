@@ -21,15 +21,25 @@ function App() {
     }
   ]);
 
+  const deleteUser = (id) => {
+    setUsers(users.filter(user => user.id !== id));
+  }
+
+  const addNewUser = (newUser) => {
+    const newUsers = users.push(newUser);
+    setUsers(newUsers);
+    console.log(users);
+  }
+
   return (
     <div className='container'>
       <h4>User App</h4>
       <hr />
-      <AddUser />
+      <AddUser addNewUser={addNewUser} />
 
       <hr />
 
-      <Users users = {users}/>
+      <Users users={users} deleteUser={deleteUser} />
     </div>
   );
 }
