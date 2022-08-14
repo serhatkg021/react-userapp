@@ -24,21 +24,20 @@ function AddUser(params) {
         });
     }
 
-    const onAddSubmit = (e) => {
+    const onAddSubmit = () => {
         const newUser = {
             id: Math.random(),
             name: user.name,
             email: user.email
         }
         addNewUser(newUser);
-        e.preventDefault();
     }
 
     return (
         <div className="card">
             <h4 className="card-header">Add New User</h4>
             <div className="card-body">
-                <form onSubmit={onAddSubmit}>
+                <div>
                     <div className="from-group">
                         <label htmlFor="name">Name</label>
                         <input
@@ -65,10 +64,10 @@ function AddUser(params) {
                     </div>
 
                     <button
-                        type="submit"
                         className="btn btn-danger btn-block"
+                        onClick={() => onAddSubmit()}
                     >Add New User</button>
-                </form>
+                </div>
             </div>
         </div>
     )

@@ -3,32 +3,37 @@ import AddUser from './components/AddUser';
 import Users from './components/Users';
 
 function App() {
-  const [users, setUsers] = useState([
-    {
-      id: 1,
-      name: "Serhat Kadir",
-      email: "serhat@gmail.com"
-    },
-    {
-      id: 2,
-      name: "Salih",
-      email: "salih@gmail.com"
-    },
-    {
-      id: 3,
-      name: "Engin",
-      email: "engin@gmail.com"
-    }
-  ]);
+
+  const [error, setError] = useState(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [users, setUsers] = useState([]);
+
+  const getUsers = () => {
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then(res => res.json())
+      .then(
+        (result) => {
+          setIsLoaded(true);
+          setUsers(result);
+        },
+        // Note: it's important to handle errors here
+        // instead of a catch() block so that we don't swallow
+        // exceptions from actual bugs in components.
+        (error) => {
+          setIsLoaded(true);
+          setError(error);
+        }
+      )
+  }
 
   const deleteUser = (id) => {
     setUsers(users.filter(user => user.id !== id));
   }
 
   const addNewUser = (newUser) => {
-    const newUsers = users.push(newUser);
-    setUsers(newUsers);
-    console.log(users);
+    setUsers(users => (
+      [...users, newUser]
+    ))
   }
 
   return (
@@ -39,7 +44,7 @@ function App() {
 
       <hr />
 
-      <Users users={users} deleteUser={deleteUser} />
+      <Users users={users} error={error} isLoaded={isLoaded} getUsers={getUsers} deleteUser={deleteUser} />
     </div>
   );
 }
